@@ -1,8 +1,6 @@
 # React Nanodegree Project-2- React Redux Readable App
 
-Book Tracking Application
-- Bookshelf app that allows to select and categorize books. (Read, Currently Reading, or Want to Read)
-- Search for a book and categorize (Read, Currently Reading, or Want to Read)
+ Readable is a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
 
 To run the app locally:
 
