@@ -18,7 +18,6 @@ class ListPosts extends Component{
  }
 
   componentDidMount() {
-    console.log("calling itemsfetchPosts")
     this.props.itemsfetchPosts();
  }
 
@@ -26,13 +25,13 @@ class ListPosts extends Component{
   render() {
 
      const {posts} = this.props
-    //  console.log (posts)
-    //  console.log ("posts:" + posts.length)
+
      return (
        <div className ='content'>
         <div className='header'>
             <h3> Posts </h3>
             <div>
+              // TODO : Need to add sorting feature
                 <Link to= "/" > Date </Link>
                 <Link to= "/" > Score </Link>
             </div>

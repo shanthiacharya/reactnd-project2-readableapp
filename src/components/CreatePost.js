@@ -2,11 +2,20 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { addPost } from '../actions'
 import Modal from 'react-modal'
+import {fetchAllCategories} from '../actions'
+import PropTypes from 'prop-types'
 
 class CreatePost extends Component {
+
+  constructor(props) {
+    super(props);
+     this.props.getCategories();
+  }
+  static PropTypes = {
+    categories: PropTypes.array.isRequired
+  }
   state = {
     addPostModalOpen: false,
-
     post_title: '',
     post_description: '',
     post_category: '',
@@ -14,6 +23,10 @@ class CreatePost extends Component {
 
   }
 
+  componentDidMount(){
+      console.log(this.props.categories)
+
+  }
   openAddPostModal = ()=>{
        this.setState (() => (
          {
@@ -34,7 +47,7 @@ class CreatePost extends Component {
 
   render(){
      const {addPostModalOpen,post_category,post_owner} = this.state
-     const {  addPostDetails } = this.props
+     const {addPostDetails } = this.props
     return(
        <div>
                 <button className="createpostbutton"  onClick={() => this.openAddPostModal()} >
@@ -47,14 +60,12 @@ class CreatePost extends Component {
                          overlayClassName='onerlay'
                          contentLabel="Modal">
                          <h1>Modal Content</h1>
-                         <span className="closebtn">&times;</span>
+                         <span className="closebtn" onClick={this.closeAddPostModal}>&times;</span>
                            <form onSubmit={e => {
                              e.preventDefault()
 
-                            //  let title = this.post_title.value
-                            //  let body = this.post_description.value
-                              var today = new Date()
-                             let timestamp = today.getTime() //today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                             var today = new Date()
+                             let timestamp = today.getTime()
                              var obj = {
                                  id: 0,
                                  timestamp: timestamp,
@@ -78,10 +89,10 @@ class CreatePost extends Component {
                               <br/>
                             <label>category</label>
                             <select value={this.state.value} >
-                              <option value="grapefruit">Grapefruit</option>
-                              <option value="lime">Lime</option>
-                              <option value="coconut">Coconut</option>
-                              <option value="mango">Mango</option>
+                              <option value="react">Grapefruit</option>
+                              <option value="redux">Lime</option>
+                              <option value="Udacity">Coconut</option>
+                              <option value="others">Mango</option>
                             </select>
                               <div className = 'modal-footer'>
                               <button type="submit" className="submitpostbutton">Add</button>
@@ -97,16 +108,20 @@ class CreatePost extends Component {
 
 
 
+
 function mapStateToProps ({ state }) {
 
+
   return {
-       posts: state
+       // TODO : Not sure how to get the categories from state.categories that got assigned in reducers
+       categories: state
     }
 }
 function mapDispatchToProps (dispatch) {
   return {
 
     addPostDetails: (data) => dispatch(addPost(data)),
+    getCategories: () => dispatch(fetchAllCategories())
 
   }
 }

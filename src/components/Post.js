@@ -9,16 +9,10 @@ import {fetchCommentByPostId,deleteByPostId,upVoteByPostId,downVoteByPostId } fr
 
 class Post extends Component {
 
-    constructor (props) {
-      super(props)
-      // this.state = {
-      //   comments :[]
-      // }
 
-
-    }
 
     componentDidMount() {
+        // TODO : How do I wait until the results come back successfully, there is a delay
        this.props.itemsfetchComments(this.props.post.id);
    }
     handleClickDeletePost(id) {
@@ -33,8 +27,6 @@ class Post extends Component {
 
     render() {
       const {post,comments} = this.props
-     // if (comments)
-      console.log( comments)
       if (comments) console.log( comments.length)
        let today = new Date (post.timestamp)
        const timestamp =  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
