@@ -1,5 +1,5 @@
 
-import {RECEIVE_COMMENTS } from '../actions'
+import {RECEIVE_COMMENTS,ADD_COMMENT } from '../actions'
 const INITIAL_STATE = { comments: [] };
 
 
@@ -11,7 +11,12 @@ function comments (state=INITIAL_STATE, action) {
 
       case RECEIVE_COMMENTS:
       return { ...state, comments:action.data}
-     default:
+      case ADD_COMMENT:
+        return {
+          ...state,
+          comments:[...state.comments,action.data]
+        }
+      default:
         return state
   }
 }

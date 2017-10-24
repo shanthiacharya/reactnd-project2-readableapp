@@ -13,7 +13,7 @@ class Post extends Component {
 
     componentDidMount() {
         // TODO : How do I wait until the results come back successfully, there is a delay
-       this.props.itemsfetchComments(this.props.post.id);
+      //  this.props.itemsfetchComments(this.props.post.id);
    }
     handleClickDeletePost(id) {
        this.props.itemdeletePost(this.props.post.id);
@@ -34,7 +34,7 @@ class Post extends Component {
 
       return (
 
-         <li className= "post_listitem" key={post.id}>
+         <li className= "post_listitems" key={post.id}>
          <div className='post'>
             <div className ='votes'>
                <button className="icon-btn"  onClick={() => this.handleClickUpvotePost(post.id,post.voteScore)}>  <CaretUpIcon size={25}/> </button>
@@ -45,8 +45,8 @@ class Post extends Component {
                <Link to= {"/:" + post.id}  className ='title'> {post.title}</Link>
                 <p className="subtitle"> {post.body} </p>
                   <p className='tagline'>Submitted by -{post.author} at {timestamp } </p>
-                  <Link to= "/" > 2 comments </Link>
-                  <Link to={"category/:" + post.category} className='button_meta'> {post.category} </Link>
+                   <Link to= "/" > {post.commentCount} comments </Link>
+                   <Link to={"category/:" + post.category} className='button_meta'> {post.category} </Link>
                   <button className="icon-btn" onClick={() => this.handleClickDeletePost(post.id)}> Delete </button>
             </div>
          </div>

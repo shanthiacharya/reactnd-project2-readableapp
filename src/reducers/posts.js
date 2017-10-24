@@ -1,10 +1,9 @@
 
-import {ADD_POST,DELETE_POST,RECEIVE_POSTS,RECEIVE_COMMENTS,RECEIVE_POSTBYID,DOWNVOTE_POST,UPVOTE_POST,RECEIVE_CATEGORIES } from '../actions'
+import {ADD_POST,DELETE_POST,RECEIVE_POSTS,RECEIVE_COMMENTS,RECEIVE_POSTBYID,DOWNVOTE_POST,UPVOTE_POST,RECEIVE_CATEGORIES,RECEIVE_POSTBYCATEGORY } from '../actions'
 const INITIAL_STATE = { posts: [], post: null ,categories:[]};
 
 
 export default function posts (state = INITIAL_STATE, action) {
-
 
   switch (action.type){
     case ADD_POST:
@@ -32,9 +31,11 @@ export default function posts (state = INITIAL_STATE, action) {
           ...state
        }
       case RECEIVE_POSTS:
-        return { ...state, posts:action.data}
+        return { ...state.posts, posts:action.data}
+      case RECEIVE_POSTBYCATEGORY:
+        return { posts:action.data}
       case RECEIVE_POSTBYID:
-          return { post: action.data }
+          return {...state, post: action.data }
       case RECEIVE_CATEGORIES:
         console.log ("RECEIVE_CATEGORIES:" + JSON.stringify(action.data.categories))
             // TODO : Need to understand if this is correct way to assign categories

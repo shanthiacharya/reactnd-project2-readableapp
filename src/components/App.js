@@ -15,35 +15,6 @@ import PostCategory from '../components/PostCategory'
 
 class App extends Component {
 
-  //  constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     posts :[]
-  //   }
-  //
-  // }
-  //
-  // static PropTypes = {
-  //   itemsfetchPosts: PropTypes.func.isRequired,
-  //   posts: PropTypes.array.isRequired
-  //
-  // }
-  //
-  //  componentDidMount() {
-  //    this.props.itemsfetchPosts();
-  // }
-  //
-  // getPostById(id) {
-  //   let posts
-  //   if (this.state.posts){
-  //       posts = this.state.posts.filter((post) => (post.id === id) )
-  //       if (posts.length > 0){
-  //         return posts[0]
-  //       } else {
-  //         return null
-  //       }
-  //     }
-  //  }
 
 
   render() {
@@ -63,7 +34,7 @@ class App extends Component {
 
               </div >
           )}/>
-          <Route exact path ='/:category/:id' component={PostCategory} />
+          <Route exact path ='/category/:category' component={PostCategory} />
           <Route exact path ="/:id" component={PostDetails} />
 
 

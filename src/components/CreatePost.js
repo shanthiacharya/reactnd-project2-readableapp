@@ -57,7 +57,7 @@ class CreatePost extends Component {
                          isOpen={addPostModalOpen}
                          closeTimeoutMS={0}
                          className ='modal'
-                         overlayClassName='onerlay'
+                         overlayClassName='overlay'
                          contentLabel="Modal">
                          <h1>Modal Content</h1>
                          <span className="closebtn" onClick={this.closeAddPostModal}>&times;</span>

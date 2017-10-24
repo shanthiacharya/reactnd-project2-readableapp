@@ -30,8 +30,8 @@ class ListPosts extends Component{
        <div className ='content'>
         <div className='header'>
             <h3> Posts </h3>
-            <div>
-              // TODO : Need to add sorting feature
+        <div>
+
                 <Link to= "/" > Date </Link>
                 <Link to= "/" > Score </Link>
             </div>

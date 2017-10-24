@@ -16,7 +16,12 @@ export const DELETE_POST = 'DELETE_POST'
 export const UPVOTE_POST = 'UPVOTE_POST'
 export const DOWNVOTE_POST = 'DOWNVOTE_POST'
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
+export const ADD_COMMENT = 'ADD_COMMENT'
+export const DELETE_COMMENT = 'DELETE_COMMENT'
+export const UPVOTE_COMMENT = 'UPVOTE_COMMENT'
+export const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT'
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
+export const RECEIVE_POSTBYCATEGORY = 'RECEIVE_POSTBYCATEGORY'
 
 export const receivePosts = data => ({
   type: RECEIVE_POSTS,
@@ -25,6 +30,11 @@ export const receivePosts = data => ({
 
 export const receivePostsbyId = data => ({
   type: RECEIVE_POSTBYID,
+  data
+});
+
+export const receivePostsbyCategory = data => ({
+  type: RECEIVE_POSTBYCATEGORY,
   data
 });
 
@@ -52,22 +62,30 @@ export const fetchAllCategories = () => dispatch => (
 
 
 export const fetchPostbyId = (id) => dispatch => (
-
   fetch(`${api}/posts/${id}`, { headers })
-  .then(res => res.data)
+  .then(res => res.json())
   .then(data => dispatch (receivePostsbyId(data)) )
+  .catch(e => requestError(e))
+)
 
+export const fetchPostbyCategory = (category) => dispatch => (
+  fetch(`${api}/${category}/posts`, { headers })
+  .then(res => res.json())
+  .then(data => dispatch (receivePostsbyCategory(data)) )
+  .catch(e => requestError(e))
 )
 
 export const fetchCommentByPostId = (id) => dispatch => (
-
-
   fetch(`${api}/posts/${id}/comments`, { headers })
   .then(res => res.json())
   .then(data => dispatch (receiveComments(data)) )
-
-
+  .catch(e => requestError(e))
 )
+
+function requestError(e) {
+    console.log(e);
+  }
+
 // TODO : Did this actually set the delete flag to true ,not showing up as true in redux dev tools
 export const deleteByPostId = (id,deleted) => dispatch => (
 
@@ -116,6 +134,29 @@ export const upvotePost = (id,voteScore) => ({
 })
 export const downvotePost = (id,voteScore) => ({
     type: 'DOWNVOTE_POST',
+    id,
+    voteScore
+})
+
+export const addComment = (data) => ({
+    type: 'ADD_COMMENT',
+    data
+
+})
+
+export const deleteComment = (id,deleted) => ({
+    type: 'DELETE_COMMENT',
+    id,
+    deleted:true
+})
+
+export const upvoteComment = (id,voteScore) => ({
+    type: 'UPVOTE_COMMENT',
+    id,
+    voteScore
+})
+export const downvoteComment = (id,voteScore) => ({
+    type: 'DOWNVOTE_COMMENT',
     id,
     voteScore
 })
