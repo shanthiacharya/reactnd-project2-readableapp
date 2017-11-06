@@ -8,6 +8,8 @@ import {fetchPostbyId,fetchAllCommentByPosts,fetchCommentByPostId,addComment } f
 import CaretUpIcon from 'react-icons/lib/fa/caret-up'
 import CaretDownIcon from 'react-icons/lib/fa/caret-down'
 import ArrowLeftIcon from 'react-icons/lib/fa/arrow-left'
+import TrashIcon from 'react-icons/lib/fa/trash'
+import EditIcon from 'react-icons/lib/fa/pencil-square'
 
 class PostDetails extends Component {
 
@@ -21,16 +23,19 @@ class PostDetails extends Component {
     state = {
       comment_body: '',
       comment_owner:"sacharya",
-      postId:null
+      postId:null,
+      commentId:0
     }
 
 
     componentDidMount() {
       this.postId = this.props.match.params.id
       this.postId = this.postId.replace(/:/ig,'')
+
       this.props.itemsfetchPostbyId(this.postId)
       this.props.itemsfetchComments(this.postId);
     }
+
 
     handleCommentSubmit =(event) => {
       event.preventDefault()
@@ -38,7 +43,7 @@ class PostDetails extends Component {
       let today = new Date ()
       const timestamp =  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
       var obj = {
-          id: 0,
+          id: this.state.commentId++,
           parentId:this.postId,
           timestamp: timestamp,
           body: this.comment_body.value,
@@ -52,7 +57,8 @@ class PostDetails extends Component {
     }
 
     render() {
-       const {post,comments,addComment} = this.props
+
+      const {post,comments,addComment} = this.props
       {console.log(this.props.post)}
 
         if (!this.props.post) {
@@ -65,9 +71,13 @@ class PostDetails extends Component {
               <div>
                 <div className="topnav">
                   <Link  className="icon-btn-back" to ="/"> <ArrowLeftIcon size={25}/> Back </Link>
-
                 </div>
-                <Post post={post ? post : null} key= {post.id} />
+              
+                {
+                   post.map((apost) => (
+                     <Post post={apost ? apost : null} key= {apost.id} />
+                   ))
+                 }
                 <div className ='content'>
                   <div className='header'>
                         <h3> Comments </h3>
@@ -92,7 +102,8 @@ class PostDetails extends Component {
                            <p  className ='title'> {comment.title}</p>
                             <p className="subtitle"> {comment.body} </p>
                               <p className='tagline'>Submitted by -{comment.author} at {comment.timestamp } </p>
-                              <button className="icon-btn"> Delete </button>
+                              <button className="icon-btn"> <TrashIcon size={20}/> </button>
+                              <button className="icon-btn"> <EditIcon size={20}/> </button>
                         </div>
                      </div>
 
@@ -113,7 +124,7 @@ class PostDetails extends Component {
 
 
 const mapStateToProps = (state) =>{
-
+  console.log("Active Post: " +  state.posts.post )
     return {
         post: state.posts.post,
         comments: state.comments.comments

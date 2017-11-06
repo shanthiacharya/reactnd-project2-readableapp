@@ -61,11 +61,16 @@ export const fetchAllCategories = () => dispatch => (
 )
 
 
+// export const fetchPostbyId = (id) => dispatch => (
+//   fetch(`${api}/posts/${id}`, { headers })
+//   .then(res => res.json())
+//   .then(data => dispatch (receivePostsbyId(data)) )
+//   .catch(e => requestError(e))
+// )
 export const fetchPostbyId = (id) => dispatch => (
-  fetch(`${api}/posts/${id}`, { headers })
-  .then(res => res.json())
-  .then(data => dispatch (receivePostsbyId(data)) )
-  .catch(e => requestError(e))
+
+  dispatch (receivePostsbyId(id))
+
 )
 
 export const fetchPostbyCategory = (category) => dispatch => (
@@ -90,15 +95,16 @@ function requestError(e) {
 export const deleteByPostId = (id,deleted) => dispatch => (
 
   fetch(`${api}/posts/${id}`,{ Method:'DELETE',headers })
-  .then(res => { res.json();} )
+  .then(res => res.json() )
   .then(data =>  dispatch (deletePost(id,deleted)) )
+  .catch(e => requestError(e))
 
 )
 
 // TODO : What data does it return ,  does it increment the voteScore
 export const upVoteByPostId = (id,voteScore) => dispatch => (
 
-  fetch(`${api}/posts/${id}`,{ method:'POST',body:JSON.stringify({option: "upVote"}),headers })
+  fetch(`${api}/posts/${id}`,{ method:'POST',body:JSON.stringify({option:"upVote"}),headers })
   .then(res => { res.json();} )
   // TODO : What data does it return ,  should I send data , it has nothing
   .then(data =>  dispatch (upvotePost(id,voteScore)) )

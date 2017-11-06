@@ -9,24 +9,34 @@ class CreatePost extends Component {
 
   constructor(props) {
     super(props);
-     this.props.getCategories();
+
   }
   static PropTypes = {
     categories: PropTypes.array.isRequired
   }
+
   state = {
+    id: 0,
     addPostModalOpen: false,
     post_title: '',
     post_description: '',
-    post_category: '',
+    post_category:'react' ,
     post_owner:'sacharya'
 
   }
 
   componentDidMount(){
-      console.log(this.props.categories)
+    this.props.getCategories();
+  }
+
+  getDefaultCategory =() => {
+    if (this.props.categories.length) {
+        return this.props.categories[0].name;
+      }
+      return null;
 
   }
+
   openAddPostModal = ()=>{
        this.setState (() => (
          {
@@ -43,11 +53,13 @@ class CreatePost extends Component {
          }))
   }
 
-
+ handleCategoryChange(event) {
+   this.state.post_category = event.target.value;
+ }
 
   render(){
-     const {addPostModalOpen,post_category,post_owner} = this.state
-     const {addPostDetails } = this.props
+     const {addPostModalOpen,post_category,post_owner,id} = this.state
+     const {addPostDetails,categories } = this.props
     return(
        <div>
                 <button className="createpostbutton"  onClick={() => this.openAddPostModal()} >
@@ -67,12 +79,12 @@ class CreatePost extends Component {
                              var today = new Date()
                              let timestamp = today.getTime()
                              var obj = {
-                                 id: 0,
+                                 id: this.state.id++,
                                  timestamp: timestamp,
                                  title: this.post_title.value,
                                  body: this.post_description.value,
                                  author: post_owner,
-                                 category: this.post_category,
+                                 category: this.state.post_category,
                                  deleted: false,
                                  voteScore: 0
                                }
@@ -88,11 +100,12 @@ class CreatePost extends Component {
                             <textarea type="text" ref={(input) => this.post_description = input} />
                               <br/>
                             <label>category</label>
-                            <select value={this.state.value} >
-                              <option value="react">Grapefruit</option>
-                              <option value="redux">Lime</option>
-                              <option value="Udacity">Coconut</option>
-                              <option value="others">Mango</option>
+                            <select value={this.post_category} onChange ={(event) => this.handleCategoryChange(event)}  >
+
+                              {this.props.categories && this.props.categories.map(category =>
+                                  <option key={category.name}  value={category.name}>{category.name}</option>
+                              )}
+
                             </select>
                               <div className = 'modal-footer'>
                               <button type="submit" className="submitpostbutton">Add</button>
@@ -109,19 +122,20 @@ class CreatePost extends Component {
 
 
 
-function mapStateToProps ({ state }) {
+function mapStateToProps ( state ) {
 
 
-  return {
-       // TODO : Not sure how to get the categories from state.categories that got assigned in reducers
-       categories: state
-    }
+    return {
+         categories: state.categories.categories
+
+      }
+
 }
 function mapDispatchToProps (dispatch) {
   return {
+    getCategories: () => dispatch(fetchAllCategories()),
+    addPostDetails: (data) => dispatch(addPost(data))
 
-    addPostDetails: (data) => dispatch(addPost(data)),
-    getCategories: () => dispatch(fetchAllCategories())
 
   }
 }

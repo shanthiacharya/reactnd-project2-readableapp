@@ -1,6 +1,6 @@
 
-import {ADD_POST,DELETE_POST,RECEIVE_POSTS,RECEIVE_COMMENTS,RECEIVE_POSTBYID,DOWNVOTE_POST,UPVOTE_POST,RECEIVE_CATEGORIES,RECEIVE_POSTBYCATEGORY } from '../actions'
-const INITIAL_STATE = { posts: [], post: null ,categories:[]};
+import {ADD_POST,DELETE_POST,RECEIVE_POSTS,RECEIVE_POSTBYID,DOWNVOTE_POST,UPVOTE_POST,RECEIVE_POSTBYCATEGORY } from '../actions'
+const INITIAL_STATE = { posts: [], post: null};
 
 
 export default function posts (state = INITIAL_STATE, action) {
@@ -15,36 +15,34 @@ export default function posts (state = INITIAL_STATE, action) {
         // TODO : How do I get the data
         console.log ("Upvote : " + action.voteScore);
         console.log (state.posts )
-        return {  ...state }
+        return {
+
+          posts : [...state.posts.map(post => post.id === action.id?{ ...post, voteScore: action.voteScore }:post)]
+         }
       case DOWNVOTE_POST:
           // TODO : How do I get the data
           console.log ("Downvote : " + action.id  + action.voteScore);
-          return {  ...state }
+          return {
+            ...state,
+            posts : [...state.posts.map(post => post.id === action.id?{ ...post, voteScore: action.voteScore }:post)]
+           }
       case DELETE_POST:
-        const postId = action.id
-        let new_posts
-        console.log ("ID : " + postId )
-        // TODO : Why does the filter comparison returns true for everything
-        new_posts = state.posts.filter(post => {post.id != postId; })
-        console.log ("After Filter:" +   new_posts.length )
         return {
-          ...state
+          posts: [...state.posts.filter (post => post.id !== action.id)]
        }
       case RECEIVE_POSTS:
         return { ...state.posts, posts:action.data}
+        // return {posts:action.data}
       case RECEIVE_POSTBYCATEGORY:
         return { posts:action.data}
       case RECEIVE_POSTBYID:
-          return {...state, post: action.data }
-      case RECEIVE_CATEGORIES:
-        console.log ("RECEIVE_CATEGORIES:" + JSON.stringify(action.data.categories))
-            // TODO : Need to understand if this is correct way to assign categories
+          // return {...state, post: action.data }
+          console.log ("RECEIVE_POSTBYI : " + action.id + action.data);
           return {
             ...state,
-            categories:[state.categories,action.data.categories]
-          }
+            post: [...state.posts.filter (post => post.id === action.data)]
 
-          // return {...state, categories: action.data.categories }
+         }
 
       default:
         return state

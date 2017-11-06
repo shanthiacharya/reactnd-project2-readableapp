@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom'
 import { connect } from 'react-redux'
 import CaretUpIcon from 'react-icons/lib/fa/caret-up'
 import CaretDownIcon from 'react-icons/lib/fa/caret-down'
+import TrashIcon from 'react-icons/lib/fa/trash'
+import EditIcon from 'react-icons/lib/fa/pencil-square'
 import {fetchCommentByPostId,deleteByPostId,upVoteByPostId,downVoteByPostId } from '../actions'
 
 
@@ -12,17 +14,16 @@ class Post extends Component {
 
 
     componentDidMount() {
-        // TODO : How do I wait until the results come back successfully, there is a delay
-      //  this.props.itemsfetchComments(this.props.post.id);
+        
    }
     handleClickDeletePost(id) {
        this.props.itemdeletePost(this.props.post.id);
     }
     handleClickUpvotePost(id,voteScore) {
-       this.props.itemupVotePost(id,voteScore);
+       this.props.itemupVotePost(id,voteScore+1);
     }
     handleClickDownVotePost(id,voteScore) {
-        this.props.itemdownVotePost(id,voteScore);
+        this.props.itemdownVotePost(id,voteScore-1);
     }
 
     render() {
@@ -47,7 +48,8 @@ class Post extends Component {
                   <p className='tagline'>Submitted by -{post.author} at {timestamp } </p>
                    <Link to= "/" > {post.commentCount} comments </Link>
                    <Link to={"category/:" + post.category} className='button_meta'> {post.category} </Link>
-                  <button className="icon-btn" onClick={() => this.handleClickDeletePost(post.id)}> Delete </button>
+                  <button className="icon-btn" onClick={() => this.handleClickDeletePost(post.id)}> <TrashIcon size={20}/> </button>
+                  <button className="icon-btn" > <EditIcon size={20}/> </button>
             </div>
          </div>
 
