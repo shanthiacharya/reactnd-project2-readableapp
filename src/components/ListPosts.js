@@ -7,7 +7,7 @@ import Post from './Post'
 import {withRouter} from 'react-router-dom'
 import {fetchAllPosts} from '../actions'
 import {setSortOrder} from '../actions/sortOrder'
-import {sortBy} from 'sort-by'
+import sortBy from "../utils/sortBy";
 
 class ListPosts extends Component{
 
@@ -56,11 +56,12 @@ class ListPosts extends Component{
 }
 
 function mapStatetoProps (state){
-    let sortorder =  state.sortorder;
+    let sortOrder =  state.sortorder;
     let posts = state.posts.posts
-    posts.sort('-voteScore')
+
+    // posts.sort(sortBy('voteScore'))
    return {
-     posts: posts
+     posts: sortBy(posts, sortOrder)
    }
 
  }
