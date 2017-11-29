@@ -7,10 +7,10 @@ import PropTypes from 'prop-types'
 
 class CreatePost extends Component {
 
-  constructor(props) {
-    super(props);
-
-  }
+  // constructor(props) {
+  //   super(props);
+  //
+  // }
   static PropTypes = {
     categories: PropTypes.array.isRequired
   }
@@ -41,7 +41,6 @@ class CreatePost extends Component {
        this.setState (() => (
          {
            addPostModalOpen: true,
-
          }))
   }
 
@@ -49,7 +48,6 @@ class CreatePost extends Component {
        this.setState (() => (
          {
            addPostModalOpen:false,
-
          }))
   }
 

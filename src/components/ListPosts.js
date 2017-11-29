@@ -5,11 +5,11 @@ import { connect } from 'react-redux'
 
 import Post from './Post'
 import {withRouter} from 'react-router-dom'
-import {fetchAllPosts } from '../actions'
+import {fetchAllPosts} from '../actions'
+import {setSortOrder} from '../actions/sortOrder'
+import {sortBy} from 'sort-by'
 
 class ListPosts extends Component{
-
-
 
  static PropTypes = {
    itemsfetchPosts: PropTypes.func.isRequired,
@@ -21,6 +21,11 @@ class ListPosts extends Component{
     this.props.itemsfetchPosts();
  }
 
+ changeSorting = (order) =>  {
+    console.log("Sort Order:" + order);
+   this.props.setSortOrder(order)
+
+ }
 
   render() {
 
@@ -31,9 +36,9 @@ class ListPosts extends Component{
         <div className='header'>
             <h3> Posts </h3>
         <div>
-
-                <Link to= "/" > Date </Link>
-                <Link to= "/" > Score </Link>
+                <label> sorty by: </label>
+                <button onClick = {() => this.changeSorting("timestamp")}> Date </button>
+                <button onClick = {() => this.changeSorting("voteScore")} >Score </button>
             </div>
         </div>
          <ul>
@@ -51,18 +56,20 @@ class ListPosts extends Component{
 }
 
 function mapStatetoProps (state){
-
+    let sortorder =  state.sortorder;
+    let posts = state.posts.posts
+    posts.sort('-voteScore')
    return {
-     posts: state.posts.posts,
-
-
+     posts: posts
    }
 
  }
 
  const mapDispatchToProps = (dispatch) => {
    return {
-     itemsfetchPosts: () => dispatch(fetchAllPosts())
+     itemsfetchPosts: () => dispatch(fetchAllPosts()),
+     setSortOrder: (order) => dispatch(setSortOrder(order))
+
    }
 
  }

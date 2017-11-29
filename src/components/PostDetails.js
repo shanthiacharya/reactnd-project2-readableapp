@@ -10,6 +10,7 @@ import CaretDownIcon from 'react-icons/lib/fa/caret-down'
 import ArrowLeftIcon from 'react-icons/lib/fa/arrow-left'
 import TrashIcon from 'react-icons/lib/fa/trash'
 import EditIcon from 'react-icons/lib/fa/pencil-square'
+import CommentForm from './CommentForm'
 
 class PostDetails extends Component {
 
@@ -24,14 +25,14 @@ class PostDetails extends Component {
       comment_body: '',
       comment_owner:"sacharya",
       postId:null,
-      commentId:0
+      commentId:0,
+      isEditing:false
     }
 
 
     componentDidMount() {
       this.postId = this.props.match.params.id
       this.postId = this.postId.replace(/:/ig,'')
-
       this.props.itemsfetchPostbyId(this.postId)
       this.props.itemsfetchComments(this.postId);
     }
@@ -53,15 +54,16 @@ class PostDetails extends Component {
           parentDeleted: false
         }
         this.props.itemaddComment(obj)
-
+        this.comment_body.value ="";
     }
 
     render() {
 
       const {post,comments,addComment} = this.props
+      let { isEditing} = this.state
       {console.log(this.props.post)}
 
-        if (!this.props.post) {
+        if (!this.props.post && this.props.comments) {
             return (
                 <h3>loading...</h3>
             );
@@ -72,7 +74,7 @@ class PostDetails extends Component {
                 <div className="topnav">
                   <Link  className="icon-btn-back" to ="/"> <ArrowLeftIcon size={25}/> Back </Link>
                 </div>
-              
+
                 {
                    post.map((apost) => (
                      <Post post={apost ? apost : null} key= {apost.id} />
@@ -87,28 +89,35 @@ class PostDetails extends Component {
                     <textarea  type="text" ref={(input) => this.comment_body = input} />
                       <br/>
                     <button className="createpostbutton" type="submit">Post</button>
+                    <br/>
+                    <br/>
+                    <br/>
                   </form>
                 <ul>
                 {
+                  
                   this.props.comments.map((comment) => (
-                  <li className= "post_listitems" key={comment.id}>
-                     <div className='post'>
-                        <div className ='votes'>
-                           <button className="icon-btn">  <CaretUpIcon size={25}/> </button>
-                            <span className="score" > {comment.voteScore}</span>
-                            <button className="icon-btn"> <CaretDownIcon size={25}/> </button>
-                         </div>
-                        <div className ='postdetails'>
-                           <p  className ='title'> {comment.title}</p>
-                            <p className="subtitle"> {comment.body} </p>
-                              <p className='tagline'>Submitted by -{comment.author} at {comment.timestamp } </p>
-                              <button className="icon-btn"> <TrashIcon size={20}/> </button>
-                              <button className="icon-btn"> <EditIcon size={20}/> </button>
-                        </div>
-                     </div>
 
-
-                     </li>
+                    <CommentForm key ={comment.id} comment = {comment ? comment : null} />
+                  // <li className= "post_listitems" key={comment.id}>
+                  //
+                  //      <div className='post'>
+                  //         <div className ='votes'>
+                  //            <button className="icon-btn">  <CaretUpIcon size={25}/> </button>
+                  //             <span className="score" > {comment.voteScore}</span>
+                  //             <button className="icon-btn"> <CaretDownIcon size={25}/> </button>
+                  //          </div>
+                  //         <div className ='postdetails'>
+                  //            <p  className ='title'> {comment.title}</p>
+                  //             <p className="subtitle"> {comment.body} </p>
+                  //               <p className='tagline'>Submitted by -{comment.author} at {comment.timestamp } </p>
+                  //               <button className="icon-btn"> <TrashIcon size={20}/> </button>
+                  //               <button className="icon-btn" onClick ={() => isEditing = "true"} > <EditIcon size={20}/> </button>
+                  //         </div>
+                  //      </div>
+                  //
+                  //
+                  //    </li>
                    ))
                  }
               </ul>
@@ -130,21 +139,7 @@ const mapStateToProps = (state) =>{
         comments: state.comments.comments
 
     };
-  // if (state.posts.post) {
-  //   return {
-  //       post: state.posts.post
-  //   };
-  // } else {
-  //   return {};
-  // }
-  //
-  // if (state.comments.comments) {
-  //     return {
-  //       comments: state.comments.comments
-  //     }
-  // } else {
-  //   return {}
-  // }
+
 
 }
 const mapDispatchToProps = (dispatch) => {

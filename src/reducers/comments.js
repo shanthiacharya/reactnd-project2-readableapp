@@ -1,5 +1,5 @@
 
-import {RECEIVE_COMMENTS,ADD_COMMENT } from '../actions'
+import {RECEIVE_COMMENTS,ADD_COMMENT,EDIT_COMMENT } from '../actions'
 const INITIAL_STATE = { comments: [] };
 
 
@@ -16,6 +16,12 @@ function comments (state=INITIAL_STATE, action) {
           ...state,
           comments:[...state.comments,action.data]
         }
+      case EDIT_COMMENT:
+          console.log("ID:" + JSON.stringify(action.id)  + "Post:" + JSON.stringify(action.comment));
+          return {
+          comments : [...state.comments.map(comment => comment.id === action.id?{ ...comment,...action.comment }:comment)]
+
+      }
       default:
         return state
   }
