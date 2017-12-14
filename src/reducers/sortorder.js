@@ -7,7 +7,6 @@ export default (state = initState, action) => {
     case SET_SORT_ORDER: {
       return action.order;
     }
-
     default: {
       return state;
     }

@@ -6,8 +6,9 @@ let token = localStorage.token
 if (!token)
   token = localStorage.token = Math.random().toString(36).substr(-8)
   const headers = {
-    'Accept': 'application/json',
-    'Authorization': token
+
+    'Content-Type': 'application/json',
+    'Authorization':' Basic amFzb25oaWNrOg=='
   }
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const RECEIVE_POSTBYID = 'RECEIVE_POSTBYID'
@@ -16,7 +17,7 @@ export const EDIT_POST = 'EDIT_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const UPVOTE_POST = 'UPVOTE_POST'
 export const DOWNVOTE_POST = 'DOWNVOTE_POST'
-export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
+export const RECEIVE_COMMENTS_BY_POSTID = 'RECEIVE_COMMENTS_BY_POSTID'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
@@ -41,9 +42,10 @@ export const receivePostsbyCategory = data => ({
   data
 });
 
-export const receiveComments = data => ({
-  type: RECEIVE_COMMENTS,
-  data
+export const receiveComments = (data,postid) => ({
+  type: RECEIVE_COMMENTS_BY_POSTID,
+  data,
+  postid
 });
 export const receiveCategories = data => ({
   type: RECEIVE_CATEGORIES,
@@ -61,10 +63,9 @@ export const editPost = (id,post) => ({
   post
 })
 
-export const deletePost = (id,deleted) => ({
+export const deletePost = (data) => ({
     type: 'DELETE_POST',
-    id,
-    deleted:true
+    data
 })
 
 export const upvotePost = (id,voteScore) => ({
@@ -78,9 +79,10 @@ export const downvotePost = (id,voteScore) => ({
     voteScore
 })
 
-export const addComment = (data) => ({
+export const addComment = (data,parentId) => ({
     type: 'ADD_COMMENT',
-    data
+    data,
+    parentId
 
 })
 export const editComment = (id,comment) =>({
@@ -89,10 +91,9 @@ export const editComment = (id,comment) =>({
   comment
 })
 
-export const deleteComment = (id,deleted) => ({
+export const deleteComment = (data) => ({
     type: 'DELETE_COMMENT',
-    id,
-    deleted:true
+    data
 })
 
 export const upvoteComment = (id,voteScore) => ({
@@ -124,16 +125,16 @@ export const fetchAllCategories = () => dispatch => (
 )
 
 
-// export const fetchPostbyId = (id) => dispatch => (
-//   fetch(`${api}/posts/${id}`, { headers })
-//   .then(res => res.json())
-//   .then(data => dispatch (receivePostsbyId(data)) )
-//   .catch(e => requestError(e))
-// )
-
 export const fetchPostbyId = (id) => dispatch => (
-  dispatch (receivePostsbyId(id))
+  fetch(`${api}/posts/${id}`, { headers })
+  .then(res => res.json())
+  .then(data => dispatch (receivePostsbyId(data)) )
+  .catch(e => requestError(e))
 )
+
+// export const fetchPostbyId = (id) => dispatch => (
+//   dispatch (receivePostsbyId(id))
+// )
 
 export const fetchPostbyCategory = (category) => dispatch => (
   fetch(`${api}/${category}/posts`, { headers })
@@ -142,10 +143,10 @@ export const fetchPostbyCategory = (category) => dispatch => (
   .catch(e => requestError(e))
 )
 
-export const fetchCommentByPostId = (id) => dispatch => (
-  fetch(`${api}/posts/${id}/comments`, { headers })
+export const fetchCommentByPostId = (postid) => dispatch => (
+  fetch(`${api}/posts/${postid}/comments`, { headers })
   .then(res => res.json())
-  .then(data => dispatch (receiveComments(data)) )
+  .then(data =>  dispatch (receiveComments(data,postid)) )
   .catch(e => requestError(e))
 )
 
@@ -153,45 +154,93 @@ function requestError(e) {
     console.log(e);
   }
 
+  export const creatNewPost = (post) => dispatch => (
+
+    fetch(`${api}/posts/`,{method:'POST',
+         headers,
+           body: JSON.stringify({ "id":post.id,"timestamp":post.timestamp, "title":post.title, "body":post.body,
+           "author":post.author, "category":post.category,"voteScore": 0,"deleted": false,"commentCount": 0})
+     })
+    .then(res => res.json() )
+    .then(data => dispatch (addPost(data)) )
+    .catch(e => requestError(e))
+  )
+
+  export const creatNewComment = (comment,parentId) => dispatch => (
+    fetch(`${api}/comments`,{ method:'POST',
+        headers,
+        body:JSON.stringify({"id":comment.id,"timestamp":comment.timestamp, "title":comment.title, "body":comment.body,
+        "author":comment.author,"parentId":comment.parentId, "voteScore": 0,"deleted": false,"parentDeleted": false})
+     })
+    .then(res =>  res.json()  )
+    .then(data =>  dispatch (addComment(data,parentId)) )
+
+    .catch(e => requestError(e))
+  )
+
+
+
 export const editByPostId = (id,post) => dispatch => (
-  fetch(`${api}/posts/${id}`,{ Method:'PUT',headers })
+  fetch(`${api}/posts/${id}`,{ method:'PUT',headers })
   .then(res => res.json() )
   .then(data => dispatch (editPost(id,post)) )
   .catch(e => requestError(e))
 )
 
 export const editByCommentId = (id,comment) => dispatch => (
-  fetch(`${api}/comments/${id}`,{ Method:'PUT',headers })
+  fetch(`${api}/comments/${id}`,{ method:'PUT',headers })
   .then(res => res.json() )
   .then(data => dispatch (editComment(id,comment)) )
   .catch(e => requestError(e))
 )
 
-// TODO : Did this actually set the delete flag to true ,not showing up as true in redux dev tools
+
 export const deleteByPostId = (id,deleted) => dispatch => (
 
-  fetch(`${api}/posts/${id}`,{ Method:'DELETE',headers })
+  fetch(`${api}/posts/${id}`,{ method:'DELETE',headers })
   .then(res => res.json() )
-  .then(data =>  dispatch (deletePost(id,deleted)) )
+  .then(data =>   dispatch (deletePost(data)) )
   .catch(e => requestError(e))
 
 )
 
-// TODO : What data does it return ,  does it increment the voteScore
+export const deleteByCommentId = (id,deleted) => dispatch => (
+
+  fetch(`${api}/comments/${id}`,{ method:'DELETE',headers })
+  .then(res => res.json() )
+  .then(data =>   dispatch (deleteComment(data)) )
+  .catch(e => requestError(e))
+
+)
+
+
+
 export const upVoteByPostId = (id,voteScore) => dispatch => (
 
   fetch(`${api}/posts/${id}`,{ method:'POST',body:JSON.stringify({option:"upVote"}),headers })
   .then(res => { res.json();} )
-  // TODO : What data does it return ,  should I send data , it has nothing
   .then(data =>  dispatch (upvotePost(id,voteScore)) )
 
 )
 
-// TODO : What data does it return ,  does it decrement the voteScore
-export const downVoteByPostId = (id,voteScore) => dispatch => (
 
+export const downVoteByPostId = (id,voteScore) => dispatch => (
   fetch(`${api}/posts/${id}`,{ method:'POST',body:JSON.stringify({option: "downVote"}), headers })
   .then(res => { res.json();} )
   .then(data =>  dispatch (downvotePost(id,voteScore)) )
+
+)
+
+export const upVoteByCommentId = (id,voteScore) => dispatch => (
+  fetch(`${api}/comments/${id}`,{ method:'POST',body:JSON.stringify({option:"upVote"}),headers })
+  .then(res => { res.json();} )
+  .then(data =>  dispatch (upvoteComment(id,voteScore)) )
+)
+
+
+export const downVoteByCommentId = (id,voteScore) => dispatch => (
+  fetch(`${api}/comments/${id}`,{ method:'POST',body:JSON.stringify({option: "downVote"}), headers })
+  .then(res => { res.json();} )
+  .then(data =>  dispatch (downvoteComment(id,voteScore)) )
 
 )

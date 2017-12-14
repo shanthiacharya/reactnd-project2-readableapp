@@ -22,7 +22,6 @@ class ListPosts extends Component{
  }
 
  changeSorting = (order) =>  {
-    console.log("Sort Order:" + order);
    this.props.setSortOrder(order)
 
  }
@@ -58,12 +57,9 @@ class ListPosts extends Component{
 function mapStatetoProps (state){
     let sortOrder =  state.sortorder;
     let posts = state.posts.posts
-
-    // posts.sort(sortBy('voteScore'))
    return {
      posts: sortBy(posts, sortOrder)
    }
-
  }
 
  const mapDispatchToProps = (dispatch) => {

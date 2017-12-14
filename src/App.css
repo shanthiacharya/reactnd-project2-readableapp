@@ -54,19 +54,37 @@
      align-items: baseline;
      display: flex;
      justify-content: space-between;
-     padding-left:15px;
+     padding-left:25px;
      padding-right:15px;
 }
 
 /* Style the top navigation bar */
 .topnav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     overflow: hidden;
     background-color: #333;
     color: #f2f2f2;
-    padding: 10px
+    padding: 10px;
+
 }
 .topnav  h3{
- padding: 0px;
+ padding-right: 50px;
+}
+.logolink{
+ text-decoration:none;
+ padding-left:20px;
+ padding-right:30px;
+ color: #f2f2f2;
+}
+
+.categorylinks{
+ padding: 15px;
+ text-decoration:none;
+ color: #f2f2f2;
+ border-left: 1px solid #f2f2f2;
+
 }
 
 .createpostbutton {
@@ -276,4 +294,10 @@ textarea {
     cursor: pointer;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.category_link {
+  color: #fff;
+  padding:10px;
+  text-decoration: none;
 }

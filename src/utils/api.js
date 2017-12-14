@@ -24,11 +24,6 @@ export const fetchByCategory = (category) =>
 
 
 export const fetchAllPosts = () =>
-      console.log("Inside Readable")
+
       fetch(`${api}/posts`, { headers })
       .then(res => res.json())
-      // .then(data => data)
-
-// export const fetchPostbyId = (id) =>
-//       fetch(`${api}/posts/${id}`, { headers })
-//       .then(res => res.json())

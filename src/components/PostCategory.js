@@ -5,6 +5,8 @@ import Post from './Post'
 import {connect} from 'react-redux'
 import {fetchPostbyId,fetchAllCommentByPosts,fetchPostbyCategory } from '../actions'
 import ArrowLeftIcon from 'react-icons/lib/fa/arrow-left'
+import MainNavigation from './MainNavigation'
+import {withRouter} from 'react-router-dom'
 
 class PostCategory extends Component {
 
@@ -19,7 +21,7 @@ class PostCategory extends Component {
       }
 
     componentDidMount() {
-        console.log("Details category : " + this.props.match.params.category);
+
         this.postCategory = this.props.match.params.category
         this.postCategory = this.postCategory.replace(/:/ig,'')
         this.props.itemsfetchPostbyCategory(this.postCategory)
@@ -30,9 +32,7 @@ class PostCategory extends Component {
         const {posts} = this.props
       return (
         <div>
-        <div className="topnav">
-          <Link  className="icon-btn-back" to ="/"> <ArrowLeftIcon size={25}/> Back </Link>
-        </div>
+        
 
         <ul>
         {
@@ -62,7 +62,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 
 }
-export default connect(
+export default withRouter (connect(
   mapStateToProps,
   mapDispatchToProps
-) (PostCategory);
+) (PostCategory));

@@ -2,21 +2,18 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { addPost } from '../actions'
 import Modal from 'react-modal'
-import {fetchAllCategories} from '../actions'
+import {fetchAllCategories,creatNewPost} from '../actions'
 import PropTypes from 'prop-types'
+import uuid from 'uuid/v1'
 
 class CreatePost extends Component {
 
-  // constructor(props) {
-  //   super(props);
-  //
-  // }
   static PropTypes = {
     categories: PropTypes.array.isRequired
   }
 
   state = {
-    id: 0,
+    id: uuid(),
     addPostModalOpen: false,
     post_title: '',
     post_description: '',
@@ -77,7 +74,7 @@ class CreatePost extends Component {
                              var today = new Date()
                              let timestamp = today.getTime()
                              var obj = {
-                                 id: this.state.id++,
+                                 id: uuid(),
                                  timestamp: timestamp,
                                  title: this.post_title.value,
                                  body: this.post_description.value,
@@ -106,8 +103,8 @@ class CreatePost extends Component {
 
                             </select>
                               <div className = 'modal-footer'>
+                                <button onClick={this.closeAddPostModal}>Cancel</button>
                               <button type="submit" className="submitpostbutton">Add</button>
-                              <button onClick={this.closeAddPostModal}>Cancel</button>
                               </div>
                             </form>
 
@@ -132,7 +129,7 @@ function mapStateToProps ( state ) {
 function mapDispatchToProps (dispatch) {
   return {
     getCategories: () => dispatch(fetchAllCategories()),
-    addPostDetails: (data) => dispatch(addPost(data))
+    addPostDetails: (post) => dispatch(creatNewPost(post))
 
 
   }

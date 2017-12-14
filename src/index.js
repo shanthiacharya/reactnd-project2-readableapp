@@ -13,24 +13,13 @@ import reducers from './reducers/index'
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-// const middleware = applyMiddleware(thunk)
+
 const store = createStore(
   reducers,
   composeEnhancers (
     applyMiddleware(thunk)
   )
 )
-
-// const store = createStore(
-//   reducer,
-//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// )
-console.log(store.getState())
-// store
-//   .dispatch(RECEIVE_POSTS)
-//   .then(() => console.log(store.getState()))
-
-
 
 ReactDOM.render(
   <Provider store = {store}>

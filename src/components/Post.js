@@ -2,12 +2,14 @@ import React ,{Component}from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import { connect } from 'react-redux'
+import {withRouter} from 'react-router-dom'
 import CaretUpIcon from 'react-icons/lib/fa/caret-up'
 import CaretDownIcon from 'react-icons/lib/fa/caret-down'
 import TrashIcon from 'react-icons/lib/fa/trash'
 import EditIcon from 'react-icons/lib/fa/pencil-square'
 import {fetchCommentByPostId,deleteByPostId,upVoteByPostId,downVoteByPostId,editByPostId,fetchAllCategories } from '../actions'
 import Modal from 'react-modal'
+
 
 class Post extends Component {
 
@@ -64,7 +66,6 @@ class Post extends Component {
 
       const {post,comments,editPostDetails,categories} = this.props
       const {addPostModalOpen,post_category,post_owner,id} = this.state
-      // if (comments) console.log( comments.length)
        let today = new Date (post.timestamp)
        const timestamp =  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
@@ -82,7 +83,7 @@ class Post extends Component {
                    <Link to= {"/:" + post.id}  className ='title'> {post.title}</Link>
                     <p className="subtitle"> {post.body} </p>
                       <p className='tagline'>Submitted by -{post.author} at {timestamp } </p>
-                       <Link to= "/" > {post.commentCount} comments </Link>
+                       <Link to= {"/:" + post.id} > {post.commentCount} comments </Link>
                        <Link to={"category/:" + post.category} className='button_meta'> {post.category} </Link>
                       <button className="icon-btn" onClick={() => this.handleClickDeletePost(post.id)}> <TrashIcon size={20}/> </button>
                       <button className="icon-btn" onClick = {() => this.openAddPostModal()}> <EditIcon size={20}/> </button>
@@ -154,7 +155,7 @@ class Post extends Component {
 
 Post.PropTypes = {
   post: PropTypes.object.isRequired,
-  comments: PropTypes.array.isRequired
+  comments: PropTypes.array
 }
 
 function mapStatetoProps (state){
@@ -180,4 +181,4 @@ function mapStatetoProps (state){
  }
 
 
-export default connect (mapStatetoProps,mapDispatchToProps)(Post)
+export default withRouter (connect(mapStatetoProps,mapDispatchToProps)(Post));

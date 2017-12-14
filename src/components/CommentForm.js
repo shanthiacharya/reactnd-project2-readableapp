@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import Post from './Post'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import {editByCommentId } from '../actions'
+import {editByCommentId,deleteByCommentId,upVoteByCommentId,downVoteByCommentId } from '../actions'
 import CaretUpIcon from 'react-icons/lib/fa/caret-up'
 import CaretDownIcon from 'react-icons/lib/fa/caret-down'
 import ArrowLeftIcon from 'react-icons/lib/fa/arrow-left'
@@ -27,26 +27,17 @@ class CommentForm extends Component {
 
  }
 
- // handleCommentSubmit =(event) => {
- //   event.preventDefault()
- //   // var today = new Date()
- //   let today = new Date ()
- //   const timestamp =  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
- //   const commentid = this.props.comment.commentId
- //   var newcomment = {
- //       id: commentid,
- //       parentId:this.props.comment.postId,
- //       timestamp: timestamp,
- //       body: this.comment_body.value,
- //       author: this.props.comment.comment_owner,
- //       voteScore: this.props.comment.voteScore,
- //       deleted: this.props.comment.deleted,
- //       parentDeleted: this.props.comment.parentDeleted
- //     }
- //     console.log ("commentid: " + commentid)
- //     this.props.itemEditComment(commentid,newcomment)
- //
- // }
+ handleClickDeleteComment(id) {
+    this.props.itemDeleteComment(this.props.comment.id);
+ }
+
+ handleClickUpvoteComment(id,voteScore) {
+    this.props.itemupVoteComment(id,voteScore+1);
+ }
+
+ handleClickDownvoteComment(id,voteScore) {
+     this.props.itemdownVoteComment(id,voteScore-1);
+ }
 
 
 
@@ -62,7 +53,6 @@ class CommentForm extends Component {
              let today = new Date ()
              const timestamp =  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
              const commentid = comment.id
-              console.log ("commentid: " + commentid)
              var newcomment = {
                  id: commentid,
                  parentId:comment.postId,
@@ -92,15 +82,15 @@ class CommentForm extends Component {
      return (
            <div className='post'>
               <div className ='votes'>
-                 <button className="icon-btn">  <CaretUpIcon size={25}/> </button>
+                 <button className="icon-btn" onClick={() => this.handleClickUpvoteComment(comment.id,comment.voteScore)}>  <CaretUpIcon size={25}/> </button>
                   <span className="score" > {comment.voteScore}</span>
-                  <button className="icon-btn"> <CaretDownIcon size={25}/> </button>
+                  <button className="icon-btn" onClick={() => this.handleClickDownvoteComment(comment.id,comment.voteScore)}> <CaretDownIcon size={25}/> </button>
                </div>
               <div className ='postdetails'>
                  <p  className ='title'> {comment.title}</p>
                   <p className="subtitle"> {comment.body} </p>
                     <p className='tagline'>Submitted by -{comment.author} at {comment.timestamp } </p>
-                    <button className="icon-btn"> <TrashIcon size={20}/> </button>
+                    <button className="icon-btn" onClick = {() => this.handleClickDeleteComment(comment.id)}> <TrashIcon size={20}/> </button>
                     <button className="icon-btn" onClick ={() => this.setState({isEditing:true})}> <EditIcon size={20}/> </button>
               </div>
            </div>
@@ -114,6 +104,12 @@ class CommentForm extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
      itemEditComment: (commentid,newcomment) => dispatch(editByCommentId(commentid,newcomment)),
+     itemDeleteComment: (commentid) => dispatch(deleteByCommentId(commentid)),
+     itemupVoteComment: (id,voteScore) => dispatch(upVoteByCommentId(id,voteScore)),
+     itemdownVoteComment: (id,voteScore) => dispatch(downVoteByCommentId(id,voteScore)),
+
+
+
   }
 
 }
