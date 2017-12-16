@@ -17,8 +17,8 @@ class CreatePost extends Component {
     addPostModalOpen: false,
     post_title: '',
     post_description: '',
-    post_category:'react' ,
-    post_owner:'sacharya'
+    post_category:'' ,
+    post_author:''
 
   }
 
@@ -78,7 +78,7 @@ class CreatePost extends Component {
                                  timestamp: timestamp,
                                  title: this.post_title.value,
                                  body: this.post_description.value,
-                                 author: post_owner,
+                                 author: this.post_author.value,
                                  category: this.state.post_category,
                                  deleted: false,
                                  voteScore: 0
@@ -102,6 +102,9 @@ class CreatePost extends Component {
                               )}
 
                             </select>
+                            <label>Author</label>
+                            <input type="text" ref={(input) => this.post_author = input} />
+
                               <div className = 'modal-footer'>
                                 <button onClick={this.closeAddPostModal}>Cancel</button>
                               <button type="submit" className="submitpostbutton">Add</button>

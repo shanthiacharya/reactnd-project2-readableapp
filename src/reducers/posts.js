@@ -13,7 +13,7 @@ export default function posts (state = INITIAL_STATE, action) {
       }
       case EDIT_POST:
           return {
-            posts : [...state.posts.map(post => post.id === action.id?{ ...post,...action.post }:post)]
+            posts : [...state.posts.map(post => post.id === action.id?{ ...post,...action.data}:post)]
           }
       case UPVOTE_POST:
         return {

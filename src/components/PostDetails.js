@@ -26,7 +26,7 @@ class PostDetails extends Component {
 
     state = {
       comment_body: '',
-      comment_owner:"sacharya",
+      comment_owner:'',
       postId:null,
       commentId:0,
       isEditing:false
@@ -60,13 +60,14 @@ class PostDetails extends Component {
           parentId:parentId,
           timestamp: timestamp,
           body: this.comment_body.value,
-          author: this.state.comment_owner,
+          author: this.comment_owner.value,
           voteScore: 0,
           deleted: false,
           parentDeleted: false
         }
         this.props.itemaddComment(obj,parentId)
         this.comment_body.value ="";
+        this.comment_owner.value ="";
     }
 
     render() {
@@ -90,11 +91,16 @@ class PostDetails extends Component {
                       <form className="commentform" onSubmit= {(event) => this.handleCommentSubmit(event)}>
                         <label>Add comment </label>
                         <textarea  type="text" ref={(input) => this.comment_body = input} />
-                          <br/>
-                        <button className="createpostbutton" type="submit">Post</button>
+                        <br/>
+                        <label>Author</label>
+                        <input type="text"  ref={(input) => this.comment_owner = input}/>
+                          <button className="createpostbutton" type="submit">Post</button>
                         <br/>
                         <br/>
                         <br/>
+                        <br/>
+                        <br/>
+                        
                       </form>
 
                      { comments &&

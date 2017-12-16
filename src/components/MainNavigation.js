@@ -24,13 +24,20 @@ class MainNavigation extends Component {
 
     render() {
       const {categories} = this.props
-      const linkprefix = "category/:"
+      const categoryLinks = categories.map (category => (
+        {
+          ...category,
+          path: `/${category.path}`
+        }
+      ))
+
       return (
 
         <div className="topnav">
             <Link  className="logolink" to ="/"> <HomeIcon size={25}/> React & Redux Readable App </Link>
-              { categories.map((category) => (
-               <Link className= "categorylinks" to={`/category/${category.name}`} key = { category.name}> {category.name} </Link>
+              { categoryLinks.map((category) => (
+
+               <Link className= "categorylinks" to={category.path} key = {category.path}> {category.name} </Link>
             ))
             }
           </div>

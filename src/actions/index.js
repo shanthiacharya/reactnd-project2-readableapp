@@ -57,10 +57,10 @@ export const addPost = (data) => ({
 
 })
 
-export const editPost = (id,post) => ({
+export const editPost = (id,data) => ({
   type: 'EDIT_POST',
   id,
-  post
+  data
 })
 
 export const deletePost = (data) => ({
@@ -85,10 +85,10 @@ export const addComment = (data,parentId) => ({
     parentId
 
 })
-export const editComment = (id,comment) =>({
+export const editComment = (id,data) =>({
   type: EDIT_COMMENT,
   id,
-  comment
+  data
 })
 
 export const deleteComment = (data) => ({
@@ -128,13 +128,10 @@ export const fetchAllCategories = () => dispatch => (
 export const fetchPostbyId = (id) => dispatch => (
   fetch(`${api}/posts/${id}`, { headers })
   .then(res => res.json())
-  .then(data => dispatch (receivePostsbyId(data)) )
+  .then(data =>  dispatch (receivePostsbyId(data)))
   .catch(e => requestError(e))
 )
 
-// export const fetchPostbyId = (id) => dispatch => (
-//   dispatch (receivePostsbyId(id))
-// )
 
 export const fetchPostbyCategory = (category) => dispatch => (
   fetch(`${api}/${category}/posts`, { headers })
@@ -181,16 +178,25 @@ function requestError(e) {
 
 
 export const editByPostId = (id,post) => dispatch => (
-  fetch(`${api}/posts/${id}`,{ method:'PUT',headers })
+  fetch(`${api}/posts/${id}`,{ method:'PUT',
+  headers,
+    body: JSON.stringify({ "id":post.id,"timestamp":post.timestamp, "title":post.title, "body":post.body,
+    "author":post.author, "category":post.category,"voteScore": post.voteScore,"deleted": post.deleted,"commentCount": post.commentCount})
+
+   })
   .then(res => res.json() )
-  .then(data => dispatch (editPost(id,post)) )
+  .then(data => dispatch (editPost(id,data)) )
   .catch(e => requestError(e))
 )
 
 export const editByCommentId = (id,comment) => dispatch => (
-  fetch(`${api}/comments/${id}`,{ method:'PUT',headers })
+  fetch(`${api}/comments/${id}`,{ method:'PUT',
+    headers,
+        body:JSON.stringify({"id":comment.id,"timestamp":comment.timestamp, "title":comment.title, "body":comment.body,
+        "author":comment.author,"parentId":comment.parentId, "voteScore": comment.voteScore,"deleted": comment.deleted,"parentDeleted": comment.parentDeleted})
+   })
   .then(res => res.json() )
-  .then(data => dispatch (editComment(id,comment)) )
+  .then(data => dispatch (editComment(id,data)) )
   .catch(e => requestError(e))
 )
 

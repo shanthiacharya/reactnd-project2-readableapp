@@ -20,11 +20,22 @@ class PostCategory extends Component {
         postCategory:null
       }
 
+    fetchCategoryPosts(category){
+       this.props.itemsfetchPostbyCategory(category)
+    }
+
+    componentWillReceiveProps (newProps) {
+      let newPropsCategory = newProps.match.params.category
+        if ( newPropsCategory !== this.postCategory ) {
+            this.fetchCategoryPosts(newPropsCategory)
+            this.postCategory = newPropsCategory
+        }
+    }
+
     componentDidMount() {
 
         this.postCategory = this.props.match.params.category
-        this.postCategory = this.postCategory.replace(/:/ig,'')
-        this.props.itemsfetchPostbyCategory(this.postCategory)
+        this.fetchCategoryPosts(this.postCategory)
 
     }
 
@@ -32,7 +43,7 @@ class PostCategory extends Component {
         const {posts} = this.props
       return (
         <div>
-        
+
 
         <ul>
         {

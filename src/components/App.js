@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component ,PureComponent} from 'react';
 import PropTypes from 'prop-types'
 // import logo from '../logo.svg';
 import { connect } from 'react-redux'
@@ -18,7 +18,7 @@ import MainNavigation from './MainNavigation'
 
 
 
-class App extends Component {
+class App extends PureComponent {
 
     componentDidMount() {
       this.props.getCategories();
@@ -34,16 +34,23 @@ class App extends Component {
     return (
 
           <div className="App">
-          <MainNavigation/>
 
+          <MainNavigation/>
           <Route exact path ="/" render = {()=> (
               <div>
+
                <CreatePost />
                 <ListPosts />
               </div >
           )}/>
-          <Route exact path ='/category/:category' component={PostCategory} />
-          <Route exact path ="/:id" component={PostDetails} />
+          <Route exact path ='/:category' render ={() => (
+
+             <PostCategory/>
+
+          )
+          } />
+
+          <Route exact path ="/:category/:id" component={PostDetails} />
           </div>
 
 

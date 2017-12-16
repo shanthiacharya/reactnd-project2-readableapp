@@ -17,6 +17,7 @@ class CommentForm extends Component {
    super (props)
      this.state ={
       comment_body: '',
+      comment_owner: '',
        isEditing: false
      }
  }
@@ -58,7 +59,7 @@ class CommentForm extends Component {
                  parentId:comment.postId,
                  timestamp: timestamp,
                  body: this.comment_body.value,
-                 author: comment.comment_owner,
+                 author: this.comment_owner.value,
                  voteScore: comment.voteScore,
                  deleted: comment.deleted,
                  parentDeleted: comment.parentDeleted
@@ -68,7 +69,9 @@ class CommentForm extends Component {
 
           }}>
                <textarea defaultValue= {comment.body}  height="100" type="text" ref={(input) => this.comment_body = input} />
-                 <br/>
+               <br/>
+               <label>Author</label>
+               <input type="text" defaultValue= {comment.author}  ref={(input) => this.comment_owner = input}/>
                <button className="createpostbutton" type="submit">Save </button>
                <button>Cancel </button>
                <br/>

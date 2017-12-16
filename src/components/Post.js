@@ -28,8 +28,8 @@ class Post extends Component {
       addPostModalOpen: false,
       post_title: '',
       post_description: '',
-      post_category:'react' ,
-      post_owner:'sacharya'
+      post_category:'' ,
+      post_author:''
     }
 
     handleClickDeletePost(id) {
@@ -43,6 +43,8 @@ class Post extends Component {
     }
 
     openAddPostModal = ()=>{
+
+
          this.setState (() => (
            {
              addPostModalOpen: true,
@@ -80,11 +82,11 @@ class Post extends Component {
                     <button className="icon-btn"  onClick={() => this.handleClickDownVotePost(post.id,post.voteScore)}> <CaretDownIcon size={25}/> </button>
                  </div>
                 <div className ='postdetails'>
-                   <Link to= {"/:" + post.id}  className ='title'> {post.title}</Link>
+                   <Link to= {"/" + post.category + "/" + post.id}  className ='title'> {post.title}</Link>
                     <p className="subtitle"> {post.body} </p>
                       <p className='tagline'>Submitted by -{post.author} at {timestamp } </p>
-                       <Link to= {"/:" + post.id} > {post.commentCount} comments </Link>
-                       <Link to={"category/:" + post.category} className='button_meta'> {post.category} </Link>
+                       <Link to= {"/:" + post.category + "/:" + post.id} > {post.commentCount} comments </Link>
+                       <Link to={"/:" + post.category} className='button_meta'> {post.category} </Link>
                       <button className="icon-btn" onClick={() => this.handleClickDeletePost(post.id)}> <TrashIcon size={20}/> </button>
                       <button className="icon-btn" onClick = {() => this.openAddPostModal()}> <EditIcon size={20}/> </button>
                 </div>
@@ -109,12 +111,11 @@ class Post extends Component {
                                 timestamp: timestamp,
                                 title: this.post_title.value,
                                 body: this.post_description.value,
-                                author: post_owner,
+                                author: this.post_author.value,
                                 category: this.state.post_category,
                                 deleted: false,
                                 voteScore: 0
                               }
-
                            editPostDetails(post.id,obj)
                            this.closeAddPostModal()
                           }}>
@@ -126,13 +127,15 @@ class Post extends Component {
                            <textarea type="text" ref={(input) => this.post_description = input} defaultValue = {post.body} />
                              <br/>
                            <label>category</label>
-                           <select defaultValue={this.post_category} onChange ={(event) => this.handleCategoryChange(event)}  >
+                           <select defaultValue={post.category} onChange ={(event) => this.handleCategoryChange(event)}  >
 
                              {this.props.categories && this.props.categories.map(category =>
                                  <option key={category.name}  value={category.name}>{category.name}</option>
                              )}
 
                            </select>
+                           <label>Author</label>
+                            <input type="text" ref={(input) => this.post_author = input} defaultValue = {post.author} />
                              <div className = 'modal-footer'>
                              <button onClick={this.closeAddPostModal}>Cancel</button>
                              <button type="submit" className="submitpostbutton">Add</button>
@@ -161,7 +164,8 @@ Post.PropTypes = {
 function mapStatetoProps (state){
 
    return {
-      comments: state.comments.comments
+      comments: state.comments.comments,
+      categories: state.categories.categories
 
    }
 

@@ -20,7 +20,7 @@ function comments (state=INITIAL_STATE, action) {
         }
       case EDIT_COMMENT:
           return {
-          comments : [...state.comments.map(comment => comment.id === action.id?{ ...comment,...action.comment }:comment)]
+          comments : [...state.comments.map(comment => comment.id === action.id?{ ...comment,...action.data }:comment)]
         }
 
       case DELETE_COMMENT:
