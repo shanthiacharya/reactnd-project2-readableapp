@@ -1,19 +1,15 @@
 import React ,{Component}from 'react'
 import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
+
 import Post from './Post'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import {fetchPostbyId,fetchAllCommentByPosts,fetchCommentByPostId,creatNewComment } from '../actions'
-import CaretUpIcon from 'react-icons/lib/fa/caret-up'
-import CaretDownIcon from 'react-icons/lib/fa/caret-down'
-import ArrowLeftIcon from 'react-icons/lib/fa/arrow-left'
-import TrashIcon from 'react-icons/lib/fa/trash'
-import EditIcon from 'react-icons/lib/fa/pencil-square'
+import {fetchPostbyId,fetchCommentByPostId,creatNewComment } from '../actions'
+
 import CommentForm from './CommentForm'
 import uuid from 'uuid/v1'
 import NotFoundPage from './NotFoundPage'
-import MainNavigation from './MainNavigation'
+
 
 class PostDetails extends Component {
 
@@ -72,7 +68,7 @@ class PostDetails extends Component {
 
     render() {
 
-      const {post,comments,addComment} = this.props
+      const {post,comments} = this.props
 
         if (!post  || this.isEmpty(post)) {
            return (
@@ -100,7 +96,7 @@ class PostDetails extends Component {
                         <br/>
                         <br/>
                         <br/>
-                        
+
                       </form>
 
                      { comments &&

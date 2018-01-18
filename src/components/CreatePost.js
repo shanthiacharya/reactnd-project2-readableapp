@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import { addPost } from '../actions'
+// import { addPost } from '../actions'
 import Modal from 'react-modal'
 import {fetchAllCategories,creatNewPost} from '../actions'
 import PropTypes from 'prop-types'
@@ -49,12 +49,13 @@ class CreatePost extends Component {
   }
 
  handleCategoryChange(event) {
-   this.state.post_category = event.target.value;
+   this.setState({post_category:event.target.value})
+   
  }
 
   render(){
-     const {addPostModalOpen,post_category,post_owner,id} = this.state
-     const {addPostDetails,categories } = this.props
+     const {addPostModalOpen} = this.state
+     const {addPostDetails } = this.props
     return(
        <div>
                 <button className="createpostbutton"  onClick={() => this.openAddPostModal()} >
@@ -66,7 +67,7 @@ class CreatePost extends Component {
                          className ='modal'
                          overlayClassName='overlay'
                          contentLabel="Modal">
-                         <h1>Modal Content</h1>
+                         <h1>Submit Post</h1>
                          <span className="closebtn" onClick={this.closeAddPostModal}>&times;</span>
                            <form onSubmit={e => {
                              e.preventDefault()

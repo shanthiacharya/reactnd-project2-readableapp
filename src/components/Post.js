@@ -59,15 +59,16 @@ class Post extends Component {
     }
 
     handleCategoryChange(event) {
-      this.state.post_category = event.target.value;
+      this.setState({post_category:event.target.value})
+      
     }
 
     onChange = field => ev => this.setState({ post_title: ev.target.value });
 
     render() {
 
-      const {post,comments,editPostDetails,categories} = this.props
-      const {addPostModalOpen,post_category,post_owner,id} = this.state
+      const {post,editPostDetails} = this.props
+      const {addPostModalOpen} = this.state
        let today = new Date (post.timestamp)
        const timestamp =  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
@@ -85,8 +86,8 @@ class Post extends Component {
                    <Link to= {"/" + post.category + "/" + post.id}  className ='title'> {post.title}</Link>
                     <p className="subtitle"> {post.body} </p>
                       <p className='tagline'>Submitted by -{post.author} at {timestamp } </p>
-                       <Link to= {"/:" + post.category + "/:" + post.id} > {post.commentCount} comments </Link>
-                       <Link to={"/:" + post.category} className='button_meta'> {post.category} </Link>
+                       <Link to= {"/" + post.category + "/" + post.id} > {post.commentCount} comments </Link>
+                       <Link to={"/" + post.category} className='button_meta'> {post.category} </Link>
                       <button className="icon-btn" onClick={() => this.handleClickDeletePost(post.id)}> <TrashIcon size={20}/> </button>
                       <button className="icon-btn" onClick = {() => this.openAddPostModal()}> <EditIcon size={20}/> </button>
                 </div>
@@ -97,15 +98,14 @@ class Post extends Component {
                         className ='modal'
                         overlayClassName='overlay'
                         contentLabel="Modal">
-                        <h1>Modal Content</h1>
+                        <h1>Submit Post</h1>
                         <span className="closebtn" onClick={this.closeAddPostModal}>&times;</span>
                           <form onSubmit={e => {
                             e.preventDefault()
 
                             var today = new Date()
                             let timestamp = today.getTime()
-                            let title = this.post_title.value;
-                            let postId = post.id;
+
                             var obj = {
                                 id: post.id,
                                 timestamp: timestamp,

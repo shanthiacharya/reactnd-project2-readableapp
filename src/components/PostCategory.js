@@ -1,11 +1,10 @@
 import React ,{Component}from 'react'
 import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
+
 import Post from './Post'
 import {connect} from 'react-redux'
-import {fetchPostbyId,fetchAllCommentByPosts,fetchPostbyCategory } from '../actions'
-import ArrowLeftIcon from 'react-icons/lib/fa/arrow-left'
-import MainNavigation from './MainNavigation'
+import {fetchPostbyCategory } from '../actions'
+
 import {withRouter} from 'react-router-dom'
 
 class PostCategory extends Component {

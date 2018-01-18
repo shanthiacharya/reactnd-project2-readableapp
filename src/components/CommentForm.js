@@ -1,13 +1,13 @@
 import React ,{Component}from 'react'
 import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
-import Post from './Post'
+
+
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
+
 import {editByCommentId,deleteByCommentId,upVoteByCommentId,downVoteByCommentId } from '../actions'
 import CaretUpIcon from 'react-icons/lib/fa/caret-up'
 import CaretDownIcon from 'react-icons/lib/fa/caret-down'
-import ArrowLeftIcon from 'react-icons/lib/fa/arrow-left'
+
 import TrashIcon from 'react-icons/lib/fa/trash'
 import EditIcon from 'react-icons/lib/fa/pencil-square'
 

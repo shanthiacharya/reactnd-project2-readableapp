@@ -1,24 +1,24 @@
-import React, { Component ,PureComponent} from 'react';
+import React, { Component} from 'react';
 import PropTypes from 'prop-types'
 // import logo from '../logo.svg';
 import { connect } from 'react-redux'
-import {Link} from 'react-router-dom'
+// import {Link} from 'react-router-dom'
 import '../App.css';
 // import * as ReadableAPI from '../utils/api'
-// import {Route} from 'react-router-dom'
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import {Route} from 'react-router-dom'
+// import { BrowserRouter, Route, Switch } from "react-router-dom";
 import {withRouter} from 'react-router-dom'
 import ListPosts from '../components/ListPosts'
 import CreatePost from '../components/CreatePost'
-import {fetchAllPosts,fetchAllCategories } from '../actions'
+import {fetchAllCategories } from '../actions'
 import PostDetails from '../components/PostDetails'
 import PostCategory from '../components/PostCategory'
-import HomeIcon from 'react-icons/lib/fa/home'
+// import HomeIcon from 'react-icons/lib/fa/home'
 import MainNavigation from './MainNavigation'
 
 
 
-class App extends PureComponent {
+class App extends Component {
 
     componentDidMount() {
       this.props.getCategories();
@@ -30,7 +30,7 @@ class App extends PureComponent {
 
   render() {
 
-    const {categories} = this.props
+    // const {categories} = this.props
     return (
 
           <div className="App">

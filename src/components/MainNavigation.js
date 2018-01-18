@@ -1,12 +1,10 @@
 import React ,{Component}from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
-import {Route} from 'react-router-dom'
-
 import {withRouter} from 'react-router-dom'
 import '../App.css';
 import {connect} from 'react-redux'
-import {fetchAllPosts,fetchAllCategories } from '../actions'
+import {fetchAllCategories } from '../actions'
 import HomeIcon from 'react-icons/lib/fa/home'
 
 
